@@ -1,5 +1,3 @@
-const MAX_HEIGHT = '400px';
-
 export const createContainerStyle = (options) => {
     // Some libraries like free-style require to write '&:hover', others accept either form, others choke on it...
     const p = options && options.prefixPseudo ? '&' : '';
@@ -11,7 +9,7 @@ export const createContainerStyle = (options) => {
         padding: '30px',
         fontSize: '50px',
         [`${p}:hover`]: { backgroundColor: 'darkturquoise' },
-        [`@media (max-height: ${MAX_HEIGHT})`]: {
+        '@media (max-height: 400px)': {
             backgroundColor: 'deepskyblue',
             textAlign: 'left',
             padding: '20px',
@@ -36,7 +34,7 @@ export const createButtonStyle = (options) => {
                 color: 'red',
             },
         },
-        [`@media (max-height: ${MAX_HEIGHT})`]: {
+        '@media (max-height: 400px)': {
             color: 'lightgreen',
             fontSize: '24px',
             [`${p}:hover:active`]: {

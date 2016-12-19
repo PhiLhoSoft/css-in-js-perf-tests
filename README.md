@@ -151,6 +151,22 @@ styletron length 536
 Fastest is: styletron
 ```
 
+The fifth test aims to simulate a real world (simplified) application:
+
+- Flexbox for layout, which test the auto-prefixing capability (perhaps with an additional library);
+- Use media query to change the layout for mobile;
+- Simulates a reset CSS, with the library if possible (globals), or external otherwise;
+- Simulates an external library with its own CSS, with overrides from the library, and potentially clashing class names;
+- Use extend and / or mixin, and variable usage;
+- Several elements with same class;
+- Conflicting class names in various parts of the app;
+
+```
+Running complex test.
+
+
+```
+
 ### Bundle sizes
 
 Launch with `npm run bundle`.
