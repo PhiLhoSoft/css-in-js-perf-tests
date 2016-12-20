@@ -1,14 +1,13 @@
 import cxs from 'cxs/optimized';
-import { createContainerStyle, createButtonStyle } from '../styles';
+
+import { mapStyles, mapClassNames } from '../../utilities';
+import appData from '../data';
+import createStyleSheet from '../styles';
 import { renderHtml, renderBody } from '../render';
 
 export const cxsOptimizedCase = (caseName) => {
-    const html = renderBody(
-        caseName, {
-            container: cxs(createContainerStyle()),
-            button: cxs(createButtonStyle()),
-        }
-    );
+    const styleSheet = mapStyles(createStyleSheet(), cxs);
+    const html = renderBody(caseName, mapClassNames(styleSheet, k => styleSheet[k]), appData);
 
     const { css } = cxs;
 

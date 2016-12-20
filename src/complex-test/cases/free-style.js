@@ -1,17 +1,17 @@
 import FreeStyle from 'free-style';
-import { createContainerStyle, createButtonStyle } from '../styles';
+
+import { mapClassNames } from '../../utilities';
+import appData from '../data';
+import createStyleSheet from '../styles';
 import { renderHtml, renderBody } from '../render';
 
 export const freeStyleCase = (caseName) => {
     const Style = FreeStyle.create();
 
     const options = { prefixPseudo: true };
-    const html = renderBody(
-        caseName, {
-            container: Style.registerStyle(createContainerStyle(options)),
-            button: Style.registerStyle(createButtonStyle(options)),
-        }
-    );
+    const styleSheet = createStyleSheet(options);
+    const classNames = mapClassNames(styleSheet, className => Style.registerStyle(styleSheet[className]));
+    const html = renderBody(caseName, classNames, appData);
 
     const css = Style.getStyles();
 

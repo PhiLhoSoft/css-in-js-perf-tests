@@ -6,7 +6,7 @@ import cssobjPluginGencss from 'cssobj-plugin-gencss';
 
 import { stylesheet } from '../styles';
 import { renderHtml, renderBody } from '../render';
-import { toClasses } from '../../utilities';
+import { toClassSelectors } from '../../utilities';
 
 export const cssobjCase = (caseName) => {
     const cssobj = cssobjCore({
@@ -17,7 +17,7 @@ export const cssobjCase = (caseName) => {
             cssobjPluginGencss({ indent: '\t', newLine: '\n' }),
         ]
     });
-    const cssObject = cssobj(toClasses(stylesheet));
+    const cssObject = cssobj(toClassSelectors(stylesheet));
 
     const html = renderBody(caseName, cssObject.mapClass('container'), cssObject.mapClass('button'));
 

@@ -5,7 +5,7 @@ import cssobjPluginGencss from 'cssobj-plugin-gencss';
 
 import { stylesheet, buttonClassNames } from '../styles';
 import { renderHtml, renderBody } from '../render';
-import { toClasses } from '../../utilities';
+import { toClassSelectors } from '../../utilities';
 
 export const cssobjCase = (caseName) => {
     const cssobj = cssobjCore({
@@ -15,7 +15,7 @@ export const cssobjCase = (caseName) => {
             cssobjPluginGencss({ indent: '', newLine: '' }),
         ]
     });
-    const cssObject = cssobj(toClasses(stylesheet));
+    const cssObject = cssobj(toClassSelectors(stylesheet));
 
     const getButtonClassName = i => cssObject.mapClass(buttonClassNames[i]);
 

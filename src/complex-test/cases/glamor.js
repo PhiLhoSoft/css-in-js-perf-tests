@@ -1,17 +1,18 @@
 import { renderStatic } from 'glamor/server';
 import { style, flush } from 'glamor';
-import { createContainerStyle, createButtonStyle } from '../styles';
+
+import { mapClassNames } from '../../utilities';
+import appData from '../data';
+import createStyleSheet from '../styles';
 import { renderHtml, renderBody } from '../render';
 
 export const glamorCase = (caseName) => {
-    const { html, css } = renderStatic(() =>
-        renderBody(
-            caseName, {
-                container: style(createContainerStyle()),
-                button: style(createButtonStyle()),
-            }
-        )
-    );
+    const styleSheet = createStyleSheet();
+
+    const { html, css } = renderStatic(() => {
+        const classNames = mapClassNames(styleSheet, className => style(styleSheet[className]));
+        return renderBody(caseName, classNames, appData);
+    });
 
     flush();
 

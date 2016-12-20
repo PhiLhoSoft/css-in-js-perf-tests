@@ -1,7 +1,10 @@
 import { create } from 'jss';
 import nested from 'jss-nested';
 import camelCase from 'jss-camel-case';
-import { createStylesheet } from '../styles';
+
+import { mapClassNames } from '../../utilities';
+import appData from '../data';
+import createStyleSheet from '../styles';
 import { renderHtml, renderBody } from '../render';
 
 export const jssWithoutPresetCase = (caseName) => {
@@ -10,9 +13,9 @@ export const jssWithoutPresetCase = (caseName) => {
     jss.use(camelCase());
 
     const options = { prefixPseudo: true };
-    const { classes: { container, button } } = jss.createStyleSheet(createStylesheet(options)).attach();
+    const styleSheet = jss.createStyleSheet(createStyleSheet(options)).attach();
 
-    const html = renderBody(caseName, { container, button });
+    const html = renderBody(caseName, mapClassNames(styleSheet.classes, k => styleSheet.classes[k]), appData);
 
     const css = jss.sheets.toString();
 

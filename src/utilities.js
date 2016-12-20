@@ -24,10 +24,24 @@ export const createOutputDir = (testName) => {
     return outputDir;
 };
 
-export const toClasses = (css) => {
-    const newCss = {};
-    Object.keys(css).forEach((className) => {
-        newCss[`.${className}`] = css[className];
-    });
-    return newCss;
-};
+// Adds a dot to class names of a stylesheet,
+// because some processors need that to distinguish from tag names.
+export const toClassSelectors = styles =>
+    Object.keys(styles).reduce((ss, className) => {
+        ss[`.${className}`] = styles[className];
+        return ss;
+    }, {});
+
+// Maps the original class names to the decorated / generated ones
+export const mapClassNames = (styles, processor) =>
+    Object.keys(styles).reduce((cnl, className) => {
+        cnl[className] = processor(className);
+        return cnl;
+    }, {});
+
+// Runs each style object through the function processing them into real CSS
+export const mapStyles = (styles, processor) =>
+    Object.keys(styles).reduce((ss, className) => {
+        ss[className] = processor(styles[className]);
+        return ss;
+    }, {});

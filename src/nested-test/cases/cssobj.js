@@ -5,7 +5,7 @@ import cssobjPluginGencss from 'cssobj-plugin-gencss';
 
 import { createStylesheet } from '../styles';
 import { renderHtml, renderBody } from '../render';
-import { toClasses } from '../../utilities';
+import { toClassSelectors } from '../../utilities';
 
 export const cssobjCase = (caseName) => {
     const cssobj = cssobjCore({
@@ -16,7 +16,7 @@ export const cssobjCase = (caseName) => {
         ]
     });
     const options = { prefixPseudo: true };
-    const cssObject = cssobj(toClasses(createStylesheet(options)));
+    const cssObject = cssobj(toClassSelectors(createStylesheet(options)));
 
     const html = renderBody(caseName, cssObject.mapClass('container'), cssObject.mapClass('button'));
 
