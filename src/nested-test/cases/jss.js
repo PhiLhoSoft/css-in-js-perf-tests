@@ -1,13 +1,16 @@
 import { create } from 'jss';
 import preset from 'jss-preset-default';
-import { createStylesheet } from '../styles';
+
+import { createStyleSheet } from '../styles';
 import { renderHtml, renderBody } from '../render';
+
+const options = { prefixPseudo: true };
+const styleSheet = createStyleSheet(options);
 
 export const jssCase = (caseName) => {
     const jss = create(preset());
 
-    const options = { prefixPseudo: true };
-    const { classes: { container, button } } = jss.createStyleSheet(createStylesheet(options)).attach();
+    const { classes: { container, button } } = jss.createStyleSheet(styleSheet).attach();
 
     const html = renderBody(caseName, container, button);
 

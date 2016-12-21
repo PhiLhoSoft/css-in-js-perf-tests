@@ -1,9 +1,12 @@
 import cxs from 'cxs';
-import { createContainerStyle, createButtonStyle } from '../styles';
+
+import { createStyleSheet } from '../styles';
 import { renderHtml, renderBody } from '../render';
 
+const styleSheet = createStyleSheet();
+
 export const cxsCase = (caseName) => {
-    const html = renderBody(caseName, cxs(createContainerStyle()), cxs(createButtonStyle()));
+    const html = renderBody(caseName, cxs(styleSheet.container), cxs(styleSheet.button));
 
     const { css } = cxs;
 

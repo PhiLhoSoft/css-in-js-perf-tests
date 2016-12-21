@@ -3,9 +3,11 @@ import cssobjCore from 'cssobj-core';
 import cssobjPluginLocalize from 'cssobj-plugin-localize';
 import cssobjPluginGencss from 'cssobj-plugin-gencss';
 
+import { toClassSelectors } from '../../utilities';
 import { stylesheet, buttonClassNames } from '../styles';
 import { renderHtml, renderBody } from '../render';
-import { toClassSelectors } from '../../utilities';
+
+const styleSheet = toClassSelectors(stylesheet);
 
 export const cssobjCase = (caseName) => {
     const cssobj = cssobjCore({
@@ -15,7 +17,7 @@ export const cssobjCase = (caseName) => {
             cssobjPluginGencss({ indent: '', newLine: '' }), // To be fair, reduce size of generated code; still add space after colon and class name.
         ]
     });
-    const cssObject = cssobj(toClassSelectors(stylesheet));
+    const cssObject = cssobj(styleSheet);
 
     const getButtonClassName = i => cssObject.mapClass(buttonClassNames[i]);
 

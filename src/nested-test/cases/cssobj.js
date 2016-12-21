@@ -3,9 +3,11 @@ import cssobjCore from 'cssobj-core';
 import cssobjPluginLocalize from 'cssobj-plugin-localize';
 import cssobjPluginGencss from 'cssobj-plugin-gencss';
 
-import { createStylesheet } from '../styles';
+import { createStyleSheet } from '../styles';
 import { renderHtml, renderBody } from '../render';
-import { toClassSelectors } from '../../utilities';
+
+const options = { prefixPseudo: true, classNamesWithSelector: true };
+const styleSheet = createStyleSheet(options);
 
 export const cssobjCase = (caseName) => {
     const cssobj = cssobjCore({
@@ -15,8 +17,7 @@ export const cssobjCase = (caseName) => {
             cssobjPluginGencss({ indent: '\t', newLine: '\n' }),
         ]
     });
-    const options = { prefixPseudo: true };
-    const cssObject = cssobj(toClassSelectors(createStylesheet(options)));
+    const cssObject = cssobj(styleSheet);
 
     const html = renderBody(caseName, cssObject.mapClass('container'), cssObject.mapClass('button'));
 

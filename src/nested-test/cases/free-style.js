@@ -1,15 +1,18 @@
 import FreeStyle from 'free-style';
-import { createContainerStyle, createButtonStyle } from '../styles';
+
+import { createStyleSheet } from '../styles';
 import { renderHtml, renderBody } from '../render';
+
+const options = { prefixPseudo: true };
+const styleSheet = createStyleSheet(options);
 
 export const freeStyleCase = (caseName) => {
     const Style = FreeStyle.create();
 
-    const options = { prefixPseudo: true };
     const html = renderBody(
         caseName,
-        Style.registerStyle(createContainerStyle(options)),
-        Style.registerStyle(createButtonStyle(options))
+        Style.registerStyle(styleSheet.container),
+        Style.registerStyle(styleSheet.button)
     );
 
     const css = Style.getStyles();

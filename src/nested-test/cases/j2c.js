@@ -1,12 +1,13 @@
 import j2c from 'j2c';
 
-import { createStylesheet } from '../styles';
+import { createStyleSheet } from '../styles';
 import { renderHtml, renderBody } from '../render';
-import { toClassSelectors } from '../../utilities';
+
+const options = { prefixPseudo: true, classNamesWithSelector: true };
+const styleSheet = createStyleSheet(options);
 
 export const j2cCase = (caseName) => {
-    const options = { prefixPseudo: true };
-    const css = j2c.sheet(toClassSelectors(createStylesheet(options)));
+    const css = j2c.sheet(styleSheet);
 
     const html = renderBody(caseName, css.container, css.button);
 
