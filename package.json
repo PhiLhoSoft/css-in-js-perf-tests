@@ -9,7 +9,7 @@
     "bench:style-overload": "node lib/style-overload-test",
     "bench:classes-overload": "node lib/classes-overload-test",
     "bench:complex": "node lib/complex-test",
-    "bench": "npm run compile && npm run bench:simple && npm run bench:nested && npm run bench:style-overload && npm run bench:classes-overload && npm run bench:complex",
+    "bench": "npm run --silent compile && npm run --silent bench:simple && npm run --silent bench:nested && npm run --silent bench:style-overload && npm run --silent bench:classes-overload && npm run --silent bench:complex",
     "bundle": "babel-node src/size-test",
     "view:simple": "node lib/simple-test/view.js",
     "view:nested": "node lib/nested-test/view.js",

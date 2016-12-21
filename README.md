@@ -153,13 +153,12 @@ Fastest is: styletron
 
 The fifth test aims to simulate a real world (simplified) application:
 
-- Flexbox for layout, which test the auto-prefixing capability (perhaps with an additional library);
+- Flexbox for layout, which test the auto-prefixing capability (native or with an additional library);
 - Use media query to change the layout for mobile;
-- Simulates a reset CSS, with the library if possible (globals), or external otherwise;
-- Simulates an external library with its own CSS, with overrides from the library, and potentially clashing class names;
+- Simulates an external library with its own CSS, with overrides from the library (globals), and potentially clashing class names;
+- Make a component with its own CSS, thus have several elements with same class;
 - Use extend and / or mixin, and variable usage;
-- Several elements with same class;
-- Conflicting class names in various parts of the app;
+- Have same class names (for different styles) in various parts of the app;
 
 ```
 Running complex test.
@@ -189,13 +188,13 @@ Size aphrodite-no-important 19.744KB
 
 ### View generated code
 
-Launch with `npm run view`.
+Launch with `npm run view` after running the bench or the compile phase.
 
 Find the generated HTML files with their embeded CSS for each test in the `output` directory.
 
 Some observations:
 
-For all of them, class name is stable between generations if same content. Unless said otherwise, the generated CSS is minimized.
+For all of them, except j2c, class name is stable between generations if same content. Unless said otherwise, the generated CSS is minimized.
 
 #### aphrodite and aphrodite-no-important
 
@@ -211,6 +210,9 @@ For all of them, class name is stable between generations if same content. Unles
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
 
+Note that cssobj manages generation on server-side but has the poorest performance.
+It is optimized for client-side generation (diff engine, targetted updates).
+
 #### cxs and cxs-optimized
 
 (simple) Doesn't remove a non-used class. Generates class names like `cxs-4211614354`.
@@ -222,7 +224,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 
 #### fela
 
-(simple) Removes a non-used class. Generates class names like `a`, `b`, `c`. Each class has one property only, they are merged at element level.
+(simple) Removes a non-used class. Generates class names like `a`, `b`, `c`, then `A`, `B`, `C`. Each class has one property only, they are merged at element level.
 (style overload) Styles common to several classes go to classes added to all corresponding elements.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
@@ -257,7 +259,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 
 #### styletron
 
-(simple) Doesn't remove a non-used class. Generates class names like `a`, `b`, `c`. Each class has one property only, they are merged at element level (starts with a space).
+(simple) Doesn't remove a non-used class. Generates class names like `a`, `b`, `c`, then `a0`, `a1`, `a2`. Each class has one property only, they are merged at element level (starts with a space).
 (style overload) Styles common to several classes go to classes added to all corresponding elements.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.

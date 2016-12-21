@@ -2,16 +2,27 @@ import FreeStyle from 'free-style';
 
 import { mapClassNames } from '../../utilities';
 import appData from '../data';
-import createStyleSheet from '../styles';
+import createAppStyleSheet from '../appStyles';
+import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
+import { renderItemComponent } from '../renderItemComponent';
+
+const options = { prefixPseudo: true };
+const styleSheetA = createAppStyleSheet(options);
+const styleSheetC = createComponentStyleSheet(options);
 
 export const freeStyleCase = (caseName) => {
     const Style = FreeStyle.create();
 
-    const options = { prefixPseudo: true };
-    const styleSheet = createStyleSheet(options);
-    const classNames = mapClassNames(styleSheet, className => Style.registerStyle(styleSheet[className]));
-    const html = renderBody(caseName, classNames, appData);
+    const renderingData = {
+        app: { classNames: mapClassNames(styleSheetA, className => Style.registerStyle(styleSheetA[className])) },
+        item: {
+            classNames: mapClassNames(styleSheetC, className => Style.registerStyle(styleSheetC[className])),
+            renderComponent: renderItemComponent,
+        },
+    };
+
+    const html = renderBody(caseName, appData, renderingData);
 
     const css = Style.getStyles();
 

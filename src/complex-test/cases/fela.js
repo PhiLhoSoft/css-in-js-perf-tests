@@ -2,16 +2,26 @@ import { createRenderer } from 'fela';
 
 import { mapClassNames } from '../../utilities';
 import appData from '../data';
-import createStyleSheet from '../styles';
+import createAppStyleSheet from '../appStyles';
+import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
+import { renderItemComponent } from '../renderItemComponent';
+
+const styleSheetA = createAppStyleSheet();
+const styleSheetC = createComponentStyleSheet();
 
 export const felaCase = (caseName) => {
     const renderer = createRenderer();
 
-    const styleSheet = createStyleSheet();
-    const classNames = mapClassNames(styleSheet, className => renderer.renderRule(() => styleSheet[className]));
+    const renderingData = {
+        app: { classNames: mapClassNames(styleSheetA, className => renderer.renderRule(() => styleSheetA[className])) },
+        item: {
+            classNames: mapClassNames(styleSheetC, className => renderer.renderRule(() => styleSheetC[className])),
+            renderComponent: renderItemComponent,
+        },
+    };
 
-    const html = renderBody(caseName, classNames, appData);
+    const html = renderBody(caseName, appData, renderingData);
 
     const css = renderer.renderToString();
 

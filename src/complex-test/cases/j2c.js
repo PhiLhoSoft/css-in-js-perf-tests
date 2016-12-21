@@ -1,16 +1,32 @@
 import j2c from 'j2c';
 
-import { toClassSelectors, mapClassNames } from '../../utilities';
+import { mapClassNames } from '../../utilities';
 import appData from '../data';
-import createStyleSheet from '../styles';
+import createAppStyleSheet from '../appStyles';
+import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
+import { renderItemComponent } from '../renderItemComponent';
+
+const options = { prefixPseudo: true, classNamesWithSelector: true };
+const styleSheetA = createAppStyleSheet(options);
+const styleSheetC = createComponentStyleSheet(options);
 
 export const j2cCase = (caseName) => {
-    const options = { prefixPseudo: true };
-    const styleSheet = createStyleSheet(options);
-    const css = j2c.sheet(toClassSelectors(styleSheet));
+    // Strings with additional properties...
+    const cssA = j2c.sheet(styleSheetA);
+    const cssC = j2c.sheet(styleSheetC);
 
-    const html = renderBody(caseName, mapClassNames(styleSheet, k => css[k]), appData);
+    const renderingData = {
+        app: { classNames: mapClassNames(cssA, className => cssA[className]) },
+        item: {
+            classNames: mapClassNames(cssC, className => cssC[className]),
+            renderComponent: renderItemComponent,
+        },
+    };
+
+    const css = cssA + cssC;
+
+    const html = renderBody(caseName, appData, renderingData);
 
     return renderHtml(css, html);
 };
