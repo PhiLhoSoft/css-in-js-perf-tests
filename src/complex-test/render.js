@@ -1,10 +1,12 @@
 export const renderHtml = (css, body) =>
-`<html>
+// We must specify the doc type to avoid the quicks mode where class names are case insensitive, which messes Fela rendering (i vs. I for example).
+`<!DOCTYPE html>
+<html>
     <head>
-        <style type="text/css">
-.container { background-color: red; } /* Awful, must be overridden! */
-.container .span { margin-left: 20px; background-color: blue; color: white; }
-.container .button { background-color: darkblue; color: white; font-weight: bold; }
+        <style type="text/css"><!-- Styles of the fake library -->
+.container { background-color: red; padding: 16px; }
+.container .counter { margin: 0 20px; padding: 4px; background-color: blue; color: white; }
+.container .button { padding: 4px 8px; background-color: darkblue; color: white; font-weight: bold; }
         </style>
         <style type="text/css">
 ${css}
@@ -38,7 +40,7 @@ export const renderBody = (libraryName, appData, renderingData) =>
             <h2>Main app</h2>
         </header>
 ${renderComponentList('item', appData.itemNumber, appData, renderingData)}
-        <button class="button">Update</button>
+        <button class="${renderingData.app.classNames.button}">Update</button>
     </section>
     <div class="${renderingData.app.classNames.sideContainer}">
         <aside class="${renderingData.app.classNames.help}">

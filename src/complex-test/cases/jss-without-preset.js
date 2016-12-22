@@ -1,6 +1,7 @@
-import { create } from 'jss';
+import { create, SheetsRegistry } from 'jss';
 import nested from 'jss-nested';
 import camelCase from 'jss-camel-case';
+import global from 'jss-global';
 
 import { mapClassNames } from '../../utilities';
 import appData from '../data';
@@ -15,9 +16,12 @@ const styleSheetC = createComponentStyleSheet(options);
 
 export const jssWithoutPresetCase = (caseName) => {
     const jss = create();
+    const sheets = new SheetsRegistry();
     jss.use(nested());
     jss.use(camelCase());
+    jss.use(global());
 
+    const cssG = jss.createStyleSheet({ '@global': styleSheetA.$globals$ }).attach();
     const cssA = jss.createStyleSheet(styleSheetA).attach();
     const cssC = jss.createStyleSheet(styleSheetC).attach();
     const renderingData = {
@@ -30,7 +34,10 @@ export const jssWithoutPresetCase = (caseName) => {
 
     const html = renderBody(caseName, appData, renderingData);
 
-    const css = jss.sheets.toString();
+    sheets.add(cssG);
+    sheets.add(cssA);
+    sheets.add(cssC);
+    const css = sheets.toString();
 
     return renderHtml(css, html);
 };

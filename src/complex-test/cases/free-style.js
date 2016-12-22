@@ -1,6 +1,6 @@
 import FreeStyle from 'free-style';
 
-import { mapClassNames } from '../../utilities';
+import { mapClassNames, processStyles } from '../../utilities';
 import appData from '../data';
 import createAppStyleSheet from '../appStyles';
 import createComponentStyleSheet from '../componentStyles';
@@ -24,7 +24,7 @@ export const freeStyleCase = (caseName) => {
 
     const html = renderBody(caseName, appData, renderingData);
 
-    const css = Style.getStyles();
+    const css = processStyles(styleSheetA.$globals$) + '\n' + Style.getStyles();
 
     return renderHtml(css, html);
 };

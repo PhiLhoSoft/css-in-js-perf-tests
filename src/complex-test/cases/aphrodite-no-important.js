@@ -1,6 +1,6 @@
 import { StyleSheet, css as aphroditeCss, StyleSheetServer, StyleSheetTestUtils } from 'aphrodite/no-important';
 
-import { mapClassNames } from '../../utilities';
+import { mapClassNames, processStyles } from '../../utilities';
 import appData from '../data';
 import createAppStyleSheet from '../appStyles';
 import createComponentStyleSheet from '../componentStyles';
@@ -28,5 +28,5 @@ export const aphroditeNoImportantCase = (caseName) => {
 
     StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
 
-    return renderHtml(css.content, html);
+    return renderHtml(processStyles(styleSheetA.$globals$) + '\n' + css.content, html);
 };

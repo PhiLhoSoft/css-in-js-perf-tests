@@ -1,16 +1,18 @@
-import { create } from 'jss';
+import { create, SheetsRegistry } from 'jss';
 import preset from 'jss-preset-default';
 import { stylesheet } from '../styles';
 import { renderHtml, renderBody } from '../render';
 
 export const jssCase = (caseName) => {
     const jss = create(preset());
+    const sheets = new SheetsRegistry();
 
-    const { classes: { container, button } } = jss.createStyleSheet(stylesheet).attach();
+    const jssCss = jss.createStyleSheet(stylesheet).attach();
 
-    const html = renderBody(caseName, container, button);
+    const html = renderBody(caseName, jssCss.classes.container, jssCss.classes.button);
 
-    const css = jss.sheets.toString();
+    sheets.add(jssCss);
+    const css = sheets.toString();
 
     return renderHtml(css, html);
 };

@@ -13,17 +13,19 @@ import { renderItemComponent } from '../renderItemComponent';
 const options = { prefixPseudo: true, classNamesWithSelector: true };
 const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
+// Same stylesheets but with undercorated class names (no dot)
 const classNamesA = createAppStyleSheet();
 const classNamesC = createComponentStyleSheet();
 
 export const cssobjCase = (caseName) => {
-    const cssobj = cssobjCore({
-        local: true,
+    const cssobjOptions = {
         plugins: [
             cssobjPluginLocalize(),
             cssobjPluginGencss({ indent: '\t', newLine: '\n' }),
         ]
-    });
+    };
+    const cssobj = cssobjCore(cssobjOptions);
+
     const cssObjectA = cssobj(styleSheetA);
     const cssObjectC = cssobj(styleSheetC);
 

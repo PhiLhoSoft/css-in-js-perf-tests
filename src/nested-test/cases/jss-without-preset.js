@@ -1,4 +1,4 @@
-import { create } from 'jss';
+import { create, SheetsRegistry } from 'jss';
 import nested from 'jss-nested';
 import camelCase from 'jss-camel-case';
 
@@ -10,14 +10,16 @@ const styleSheet = createStyleSheet(options);
 
 export const jssWithoutPresetCase = (caseName) => {
     const jss = create();
+    const sheets = new SheetsRegistry();
     jss.use(nested());
     jss.use(camelCase());
 
-    const { classes: { container, button } } = jss.createStyleSheet(styleSheet).attach();
+    const jssCss = jss.createStyleSheet(styleSheet).attach();
 
-    const html = renderBody(caseName, container, button);
+    const html = renderBody(caseName, jssCss.classes.container, jssCss.classes.button);
 
-    const css = jss.sheets.toString();
+    sheets.add(jssCss);
+    const css = sheets.toString();
 
     return renderHtml(css, html);
 };

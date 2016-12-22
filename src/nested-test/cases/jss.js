@@ -1,4 +1,4 @@
-import { create } from 'jss';
+import { create, SheetsRegistry } from 'jss';
 import preset from 'jss-preset-default';
 
 import { createStyleSheet } from '../styles';
@@ -9,12 +9,14 @@ const styleSheet = createStyleSheet(options);
 
 export const jssCase = (caseName) => {
     const jss = create(preset());
+    const sheets = new SheetsRegistry();
 
-    const { classes: { container, button } } = jss.createStyleSheet(styleSheet).attach();
+    const jssCss = jss.createStyleSheet(styleSheet).attach();
 
-    const html = renderBody(caseName, container, button);
+    const html = renderBody(caseName, jssCss.classes.container, jssCss.classes.button);
 
-    const css = jss.sheets.toString();
+    sheets.add(jssCss);
+    const css = sheets.toString();
 
     return renderHtml(css, html);
 };

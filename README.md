@@ -184,10 +184,10 @@ Fastest is: styletron
 
 The fifth test aims to simulate a real world (simplified) application:
 
-- Flexbox for layout, which test the auto-prefixing capability (native or with an additional library);
+- Flexbox for layout, which test the auto-prefixing capability (native or with an additional library); also needs global styles (on `html` and `body` tags), so shows how they are managed: from "we don't care, put that in a regular stylesheet" to "globals are first-class citizens";
 - Use media query to change the layout for mobile;
-- Simulates an external library with its own CSS, with overrides from the library (globals), and potentially clashing class names;
-- Make a component with its own CSS, thus have several elements with same class;
+- Simulate an external library with its own CSS, with overrides from the CSS library (globals again), and potentially clashing class names;
+- Make a component with its own CSS, thus have several elements with same class, and isolate CSS;
 - Use extend and / or mixin, and variable usage;
 - Have same class names (for different styles) in various parts of the app;
 
@@ -233,6 +233,7 @@ For all of them, except j2c, class name is stable between generations if same co
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
+(complex) Does auto-prefixing.
 
 #### cssobj
 
@@ -240,6 +241,7 @@ For all of them, except j2c, class name is stable between generations if same co
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
+(complex) Doesn't do auto-prefixing.
 
 Note that cssobj manages generation on server-side but has the poorest performance.
 It is optimized for client-side generation (diff engine, targetted updates).
@@ -250,6 +252,7 @@ It is optimized for client-side generation (diff engine, targetted updates).
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
+(complex) Doesn't do auto-prefixing.
 
 cxs-optimized can generate some specialized classes (with names like `cxs-display-block` or `cxs-text-align-center`) removed from the classes using these styles and added to elements using them. Seems limited to properties with a small number of possible values. Named colors are not deduplicated.
 
@@ -259,6 +262,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Styles common to several classes go to classes added to all corresponding elements.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
+(complex) Doesn't do auto-prefixing.
 
 #### free-style
 
@@ -266,6 +270,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
+(complex) Doesn't do auto-prefixing.
 
 #### glamor
 
@@ -273,6 +278,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries. Adds selectors like `css-1u8v7v4[data-simulate-hover]`.
+(complex) Does auto-prefixing.
 
 #### j2c
 
@@ -280,6 +286,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
+(complex) Doesn't do auto-prefixing.
 
 #### jss and jss-without-preset
 
@@ -287,6 +294,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
+(complex) Doesn't do auto-prefixing.
 
 #### styletron
 
@@ -294,6 +302,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Styles common to several classes go to classes added to all corresponding elements.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
+(complex) Does auto-prefixing.
 
 
 <p align="center">

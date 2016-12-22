@@ -7,10 +7,17 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
+function processGlobals(styles) {
+    Object.keys(styles.$globals$).forEach((selector) => {
+        cxs(selector, styles.$globals$[selector]);
+    });
+}
+
 const styleSheetA = createAppStyleSheet();
 const styleSheetC = createComponentStyleSheet();
 
 export const cxsOptimizedCase = (caseName) => {
+    processGlobals(styleSheetA);
     const cssA = mapStyles(styleSheetA, cxs);
     const cssC = mapStyles(styleSheetC, cxs);
 

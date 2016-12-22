@@ -7,6 +7,14 @@ export function p(o) { return o && o.prefixPseudo ? '&' : ''; }
 // Of course, these are only adaptors to make the style sheets library agnostic, these tricks are not necessary in real code.
 export function s(o) { return o && o.classNamesWithSelector ? '.' : ''; }
 
+const htmlStyle = {
+    height: '100%',
+    boxSizing: 'border-box',
+};
+const boxSizing = {
+    boxSizing: 'inherit',
+};
+
 const bodyStyle = {
     height: '100%',
     position: 'relative',
@@ -61,10 +69,12 @@ const bottomStyle = {
     backgroundColor: 'darkblue',
     color: 'gold',
     textAlign: 'right',
+    padding: '4px 8px',
 };
 
 const titleStyle = {
     backgroundColor: 'chartreuse',
+    backgroundImage: 'linear-gradient(to bottom, chartreuse, aquamarine)',
     color: 'darkblue',
     textAlign: 'center',
     fontSize: '24px',
@@ -87,7 +97,7 @@ const helpStyle = {
 };
 
 const libraryContainerStyle = {
-    backgroundColor: 'chartreuse',
+    backgroundColor: 'beige',
     color: 'darkblue',
     fontSize: '16px',
     display: 'flex',
@@ -102,15 +112,23 @@ const createButtonStyle = options => ({
     color: 'yellow',
     backgroundColor: 'rebeccapurple',
     fontSize: '30px',
-    border: '3px solid yellow',
+    padding: '16px',
+    width: '25%',
+    border: '4px solid orange',
+    borderRadius: '30px',
     [`${p(options)}:hover`]: {
         color: 'lightblue',
+        borderColor: 'dodgerblue',
     },
 });
 
 export default function createStyleSheet(options) {
-    return {
+    const globals = {
+        html: htmlStyle,
+        '*, *:before, *:after': boxSizing,
         body: bodyStyle,
+    };
+    const appStyleSheet = {
         [`${s(options)}top`]: topStyle,
         [`${s(options)}container`]: containerStyle,
         [`${s(options)}sideContainer`]: sideContainerStyle,
@@ -121,4 +139,11 @@ export default function createStyleSheet(options) {
         [`${s(options)}libraryContainer`]: libraryContainerStyle,
         [`${s(options)}button`]: createButtonStyle(options),
     };
+    if (options && options.classNamesWithSelector) {
+        // Naturally distingish tag names from class selectors
+        Object.assign(appStyleSheet, globals);
+    } else {
+        appStyleSheet.$globals$ = globals;
+    }
+    return appStyleSheet;
 }

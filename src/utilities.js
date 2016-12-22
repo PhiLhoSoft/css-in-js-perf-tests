@@ -35,13 +35,29 @@ export const toClassSelectors = styles =>
 // Maps the original class names to the decorated / generated ones
 export const mapClassNames = (styles, processor) =>
     Object.keys(styles).reduce((cnl, className) => {
-        cnl[className] = processor(className);
+        if (className !== '$globals$') {
+            cnl[className] = processor(className);
+        }
         return cnl;
     }, {});
 
 // Runs each style object through the function processing them into real CSS
 export const mapStyles = (styles, processor) =>
     Object.keys(styles).reduce((ss, className) => {
-        ss[className] = processor(styles[className]);
+        if (className !== '$globals$') {
+            ss[className] = processor(styles[className]);
+        }
         return ss;
     }, {});
+
+// Transform given style object to CSS (for globals)
+export const processStyles = (styles) => {
+    const css = [];
+    function process(style) {
+        return Object.keys(style).forEach((property) => {
+            css.push(`${toKebabCase(property)}: ${style[property]};`);
+        });
+    }
+    Object.keys(styles).forEach((selector) => { css.push(`${selector} {`); process(styles[selector]); css.push('}'); });
+    return css.join('\n');
+};
