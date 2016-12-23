@@ -42,22 +42,36 @@ export const mapClassNames = (styles, processor) =>
     }, {});
 
 // Runs each style object through the function processing them into real CSS
-export const mapStyles = (styles, processor) =>
-    Object.keys(styles).reduce((ss, className) => {
+export const mapStyles = (styles, processor, prefixer) => {
+    if (!prefixer) {
+        prefixer = x => x;
+    }
+    const css = Object.keys(styles).reduce((ss, className) => {
         if (className !== '$globals$') {
-            ss[className] = processor(styles[className]);
+            ss[className] = processor(prefixer(styles[className]));
         }
         return ss;
     }, {});
+    return css;
+};
 
 // Transform given style object to CSS (for globals)
-export const processStyles = (styles) => {
+export const processStyles = (styles, prefixer) => {
+    if (!prefixer) {
+        prefixer = x => x;
+    }
     const css = [];
     function process(style) {
         return Object.keys(style).forEach((property) => {
-            css.push(`${toKebabCase(property)}: ${style[property]};`);
+            const propertyName = toKebabCase(property);
+            const rule = style[property];
+            if (typeof rule === 'object') {
+                rule.forEach((r) => { css.push(`${propertyName}: ${r};`); });
+            } else {
+                css.push(`${propertyName}: ${rule};`);
+            }
         });
     }
-    Object.keys(styles).forEach((selector) => { css.push(`${selector} {`); process(styles[selector]); css.push('}'); });
+    Object.keys(styles).forEach((selector) => { css.push(`${selector} {`); process(prefixer(styles[selector])); css.push('}'); });
     return css.join('\n');
 };

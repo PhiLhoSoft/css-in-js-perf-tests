@@ -1,4 +1,5 @@
 import FreeStyle from 'free-style';
+import prefixer from 'inline-style-prefixer/static';
 
 import { mapClassNames, processStyles } from '../../utilities';
 import appData from '../data';
@@ -15,16 +16,16 @@ export const freeStyleCase = (caseName) => {
     const Style = FreeStyle.create();
 
     const renderingData = {
-        app: { classNames: mapClassNames(styleSheetA, className => Style.registerStyle(styleSheetA[className])) },
+        app: { classNames: mapClassNames(styleSheetA, className => Style.registerStyle(prefixer(styleSheetA[className]))) },
         item: {
-            classNames: mapClassNames(styleSheetC, className => Style.registerStyle(styleSheetC[className])),
+            classNames: mapClassNames(styleSheetC, className => Style.registerStyle(prefixer(styleSheetC[className]))),
             renderComponent: renderItemComponent,
         },
     };
 
     const html = renderBody(caseName, appData, renderingData);
 
-    const css = processStyles(styleSheetA.$globals$) + '\n' + Style.getStyles();
+    const css = processStyles(styleSheetA.$globals$, prefixer) + '\n' + Style.getStyles();
 
     return renderHtml(css, html);
 };

@@ -8,12 +8,12 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
-// Similar to CXS way
-function processGlobals(styles, process) {
-    Object.keys(styles.$globals$).forEach((selector) => {
-        process(selector, styles.$globals$[selector]);
-    });
-}
+// Similar to CXS way, but doesn't work on server side (not outside of React)
+// function processGlobals(styles, process) {
+//     Object.keys(styles.$globals$).forEach((selector) => {
+//         process(selector, styles.$globals$[selector]);
+//     });
+// }
 
 const styleSheetA = createAppStyleSheet();
 const styleSheetC = createComponentStyleSheet();
@@ -23,12 +23,12 @@ export const styletronCase = (caseName) => {
 
     const process = injectStylePrefixed.bind(null, styletron);
     // processGlobals(styleSheetA, process);
-    const cssA = mapStyles(styleSheetA, process);
-    const cssC = mapStyles(styleSheetC, process);
+    const mappedClassNamesA = mapStyles(styleSheetA, process);
+    const mappedClassNamesC = mapStyles(styleSheetC, process);
     const renderingData = {
-        app: { classNames: mapClassNames(cssA, className => cssA[className]) },
+        app: { classNames: mapClassNames(mappedClassNamesA, className => mappedClassNamesA[className]) },
         item: {
-            classNames: mapClassNames(cssC, className => cssC[className]),
+            classNames: mapClassNames(mappedClassNamesC, className => mappedClassNamesC[className]),
             renderComponent: renderItemComponent,
         },
     };

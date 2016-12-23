@@ -1,12 +1,20 @@
 import { MEDIA_MAX_WIDTH, p, s } from './appStyles';
 
-const createComponentStyle = options => ({
-    backgroundColor: 'seashell',
-    color: 'navy',
-    fontSize: '18px',
-    padding: '10px',
-    [`${p(options)}:hover`]: { backgroundColor: 'moccassin' },
-});
+const createComponentStyle = options => {
+    const container = {
+        backgroundColor: 'seashell',
+        color: 'navy',
+        fontSize: '24px',
+        padding: '10px',
+        [`${p(options)}:hover`]: { backgroundColor: 'moccassin' },
+    };
+
+    if (options && options.nestedSelectors != undefined) {
+        container[`${options.nestedSelectors}span`] = { margin: '0 20px 0 30px' };
+        container[`${options.nestedSelectors}button`] = { marginLeft: '30px' };
+    }
+    return container;
+};
 
 const createButtonStyle = (options) => {
     const buttonSize = '30px';
@@ -18,6 +26,7 @@ const createButtonStyle = (options) => {
         width: buttonSize,
         height: buttonSize,
         borderRadius: '50%',
+        cursor: 'grab', // Need prefix for webkit
         [`${p(options)}:hover`]: { color: 'orange' },
     };
 };

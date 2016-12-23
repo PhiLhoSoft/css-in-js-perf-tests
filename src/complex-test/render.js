@@ -48,7 +48,7 @@ ${renderComponentList('item', appData.itemNumber, appData, renderingData)}
                 <h2>Help</h2>
             </header>
             <p>There is a main section.</p>
-            <p>And an aside controlled by a library.</p>
+            <p>And, beside this one which provides a succint help, there is also an aside controlled by a library. This paragraph is long enough to wrap...</p>
         </aside>
         <aside class="${renderingData.app.classNames.libraryContainer}">
             <header class="${renderingData.app.classNames.title}">

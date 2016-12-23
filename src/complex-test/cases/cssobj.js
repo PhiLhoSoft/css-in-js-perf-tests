@@ -2,6 +2,7 @@
 import cssobjCore from 'cssobj-core';
 import cssobjPluginLocalize from 'cssobj-plugin-localize';
 import cssobjPluginGencss from 'cssobj-plugin-gencss';
+import prefixer from 'inline-style-prefixer/static';
 
 import { mapClassNames } from '../../utilities';
 import appData from '../data';
@@ -10,7 +11,7 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
-const options = { prefixPseudo: true, classNamesWithSelector: true };
+const options = { prefixPseudo: true, classNamesWithSelector: true, nestedSelectors: ' ' };
 const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
 // Same stylesheets but with undercorated class names (no dot)

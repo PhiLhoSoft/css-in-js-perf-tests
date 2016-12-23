@@ -87,7 +87,7 @@ const titleStyle = {
 const helpStyle = {
     backgroundColor: 'palegreen',
     color: 'darkblue',
-    fontSize: '16px',
+    fontSize: '20px',
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
@@ -145,5 +145,6 @@ export default function createStyleSheet(options) {
     } else {
         appStyleSheet.$globals$ = globals;
     }
-    return appStyleSheet;
+    // Return a deep clone to avoid corruption by prefixing the style in-place...
+    return JSON.parse(JSON.stringify(appStyleSheet));
 }

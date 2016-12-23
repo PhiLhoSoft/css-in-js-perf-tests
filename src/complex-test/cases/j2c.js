@@ -1,4 +1,5 @@
 import j2c from 'j2c';
+import prefixer from 'inline-style-prefixer/static';
 
 import { mapClassNames } from '../../utilities';
 import appData from '../data';
@@ -7,7 +8,7 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
-const options = { prefixPseudo: true, classNamesWithSelector: true };
+const options = { prefixPseudo: true, classNamesWithSelector: true, nestedSelectors: ' ' };
 const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
 

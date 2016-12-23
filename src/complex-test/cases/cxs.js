@@ -1,4 +1,6 @@
 import cxs from 'cxs';
+import prefixer from 'inline-style-prefixer/static';
+// const prefixer = x => x;
 
 import { mapStyles, mapClassNames } from '../../utilities';
 import appData from '../data';
@@ -9,22 +11,23 @@ import { renderItemComponent } from '../renderItemComponent';
 
 function processGlobals(styles) {
     Object.keys(styles.$globals$).forEach((selector) => {
-        cxs(selector, styles.$globals$[selector]);
+        cxs(selector, prefixer(styles.$globals$[selector]));
     });
 }
 
-const styleSheetA = createAppStyleSheet();
-const styleSheetC = createComponentStyleSheet();
+const options = { nestedSelectors: '' };
+const styleSheetA = createAppStyleSheet(options);
+const styleSheetC = createComponentStyleSheet(options);
 
 export const cxsCase = (caseName) => {
     processGlobals(styleSheetA);
-    const cssA = mapStyles(styleSheetA, cxs);
-    const cssC = mapStyles(styleSheetC, cxs);
+    const mappedClassNamesA = mapStyles(styleSheetA, cxs, prefixer);
+    const mappedClassNamesC = mapStyles(styleSheetC, cxs, prefixer);
 
     const renderingData = {
-        app: { classNames: mapClassNames(cssA, className => cssA[className]) },
+        app: { classNames: mapClassNames(mappedClassNamesA, className => mappedClassNamesA[className]) },
         item: {
-            classNames: mapClassNames(cssC, className => cssC[className]),
+            classNames: mapClassNames(mappedClassNamesC, className => mappedClassNamesC[className]),
             renderComponent: renderItemComponent,
         },
     };
