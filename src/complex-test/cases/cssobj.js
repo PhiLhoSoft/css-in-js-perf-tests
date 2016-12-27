@@ -11,7 +11,7 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
-const options = { prefixPseudo: true, classNamesWithSelector: true, nestedSelectors: ' ' };
+const options = { prefixPseudo: true, classNamesWithSelector: 'cssobj', nestedSelectors: ' ' };
 const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
 // Same stylesheets but with undercorated class names (no dot)

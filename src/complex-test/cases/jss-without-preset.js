@@ -12,16 +12,16 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
-const options = { prefixPseudo: true };
+const options = { prefixPseudo: true, nestedSelectors: '@global ' };
 const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
 
 export const jssWithoutPresetCase = (caseName) => {
     const jss = create();
     const sheets = new SheetsRegistry();
+    jss.use(global()); // Before nested
     jss.use(nested());
     jss.use(camelCase());
-    jss.use(global());
     // jss.use(vendorPrefixer()); // But actually doesn't work on server side :-/
 
     const ssA = prefixStylesWithFallbacks(styleSheetA, prefixer);

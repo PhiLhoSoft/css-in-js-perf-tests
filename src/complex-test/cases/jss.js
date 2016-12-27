@@ -1,6 +1,5 @@
 import { create, SheetsRegistry } from 'jss';
 import preset from 'jss-preset-default'; // Includes jss-vendor-prefixer but it doesn't work on the server side.
-import global from 'jss-global';
 import prefixer from 'inline-style-prefixer/static';
 
 import { mapClassNames, prefixStylesWithFallbacks } from '../../utilities';
@@ -10,14 +9,13 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
-const options = { prefixPseudo: true };
+const options = { prefixPseudo: true, nestedSelectors: '@global ' };
 const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
 
 export const jssCase = (caseName) => {
     const jss = create(preset());
     const sheets = new SheetsRegistry();
-    jss.use(global());
 
     const ssA = prefixStylesWithFallbacks(styleSheetA, prefixer);
     const ssC = prefixStylesWithFallbacks(styleSheetC, prefixer);

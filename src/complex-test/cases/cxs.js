@@ -32,7 +32,8 @@ export const cxsCase = (caseName) => {
     };
     const html = renderBody(caseName, appData, renderingData);
 
-    const { css } = cxs;
+    // Hack to have adjacent class names, like "".foo.bar" instead of ".foo .bar" (marked as ".foo &.bar")
+    const css = cxs.css.replace(/ &\./g, '.');
 
     cxs.reset();
 

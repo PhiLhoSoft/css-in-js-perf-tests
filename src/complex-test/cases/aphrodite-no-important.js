@@ -1,33 +1,33 @@
-import { StyleSheet, css as aphroditeCss, StyleSheetServer, StyleSheetTestUtils } from 'aphrodite/no-important';
+import { ExtendedStyleSheetNoImportant as Extended } from './aphrodite-extensions';
 
-import { mapClassNames, processStyles } from '../../utilities';
+import { mapClassNames } from '../../utilities';
 import appData from '../data';
 import createAppStyleSheet from '../appStyles';
 import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
-const styleSheetA = createAppStyleSheet();
-const styleSheetC = createComponentStyleSheet();
+const options = { bangGlobals: true };
+const styleSheetA = createAppStyleSheet(options);
+const styleSheetC = createComponentStyleSheet(options);
 
 export const aphroditeNoImportantCase = (caseName) => {
-    const cssA = StyleSheet.create(styleSheetA);
-    const cssC = StyleSheet.create(styleSheetC);
+    const cssA = Extended.StyleSheet.create(styleSheetA);
+    const cssC = Extended.StyleSheet.create(styleSheetC);
 
     // Everything must be done within the renderStatic call
-    const { html, css } = StyleSheetServer.renderStatic(() => {
+    const { html, css } = Extended.StyleSheetServer.renderStatic(() => {
         const renderingData = {
-            app: { classNames: mapClassNames(cssA, className => aphroditeCss(cssA[className])) },
+            app: { classNames: mapClassNames(cssA, className => Extended.css(cssA[className])) },
             item: {
-                classNames: mapClassNames(cssC, className => aphroditeCss(cssC[className])),
+                classNames: mapClassNames(cssC, className => Extended.css(cssC[className])),
                 renderComponent: renderItemComponent,
             },
         };
         return renderBody(caseName, appData, renderingData);
     });
 
-    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+    Extended.StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
 
-    // Would need to apply vendor prefixes to the globals...
-    return renderHtml(processStyles(styleSheetA.$globals$) + '\n' + css.content, html);
+    return renderHtml(css.content, html);
 };

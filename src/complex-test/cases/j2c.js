@@ -3,12 +3,24 @@ import prefixer from 'inline-style-prefixer/static';
 
 import { mapClassNames, mapStyles } from '../../utilities';
 import appData from '../data';
-import createAppStyleSheet from '../appStyles';
+import createAppStyleSheet, { MEDIA_MAX_WIDTH } from '../appStyles';
 import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
-const options = { prefixPseudo: true, classNamesWithSelector: true, nestedSelectors: ' ' };
+// Hack because style prefixer adds properties after the media rule.
+function moveMediaToEnd(style) {
+    Object.keys(style).forEach((selector) => {
+        const rule = style[selector];
+        const media = rule[MEDIA_MAX_WIDTH];
+        if (media) {
+            delete rule[MEDIA_MAX_WIDTH];
+            rule[MEDIA_MAX_WIDTH] = media;
+        }
+    });
+}
+
+const options = { prefixPseudo: true, classNamesWithSelector: 'j2c', nestedSelectors: ' ' };
 const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
 
@@ -16,8 +28,10 @@ export const j2cCase = (caseName) => {
     // To be fair, we apply auto-prefixing in the loop, like the other libraries.
     // We focus on features more than speed in this test case, anyway.
     const ssA = mapStyles(styleSheetA, prefixer);
+    moveMediaToEnd(ssA);
     const ssC = mapStyles(styleSheetC, prefixer);
-    // Strings with additional properties...
+    moveMediaToEnd(ssC);
+    // These are strings with additional properties...
     const cssA = j2c.sheet(ssA);
     const cssC = j2c.sheet(ssC);
 

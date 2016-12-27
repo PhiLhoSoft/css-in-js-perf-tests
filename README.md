@@ -187,8 +187,8 @@ The fifth test aims to simulate a real world (simplified) application:
 - Flexbox for layout, which test the auto-prefixing capability (native or with an additional library); also needs global styles (on `html` and `body` tags), so shows how they are managed: from "we don't care, put that in a regular stylesheet" to "globals are first-class citizens";
 - Use media query to change the layout for mobile;
 - Simulate an external library with its own CSS, with overrides from the CSS library (globals again), and potentially clashing class names;
-- Make a component with its own CSS, thus have several elements with same class, and isolate CSS;
-- Use extend and / or mixin, and variable usage;
+- Make a component with its own CSS, thus have several elements with same class, and isolate CSS (avoid class name clashes);
+- Use variables;
 - Have same class names (for different styles) in various parts of the app;
 
 ```
@@ -202,19 +202,21 @@ Running complex test.
 Launch with `npm run bundle`.
 
 ```
-Size j2c 4.624KB
-Size cssobj 10.375KB
-Size cssobj-server 7.181KB
-Size free-style 8.3KB
-Size styletron 2.667KB
-Size jss-without-preset 26.183KB
-Size glamor 31.421KB
-Size cxs 9.366KB
-Size fela 13.161KB
-Size cxs-optimized 12.268KB
-Size jss 37.185KB
 Size aphrodite 19.711KB
 Size aphrodite-no-important 19.744KB
+Size cssobj 19.953KB
+Size cssobj-server 17.034KB
+Size cxs 19.083KB
+Size cxs-optimized 21.986KB
+Size fela 24.331KB
+Size free-style 18.01KB
+Size glamor 31.421KB
+Size glamor-server 32.399KB
+Size j2c 14.333KB
+Size jss-without-preset 51.09KB
+Size jss 62.429KB
+Size styletron 12.079KB
+Size styletron-server 13.088KB
 ```
 
 ### View generated code
@@ -226,6 +228,8 @@ Find the generated HTML files with their embeded CSS for each test in the `outpu
 Some observations:
 
 For all of them, except j2c, class name is stable between generations if same content. Unless said otherwise, the generated CSS is minimized.
+Some libraries handle globals, from setting style on `body` to supporting styled nested tags (`.c p {}`) or classes (`.c .s {}`) and adjacent classes (`.c.s {}`).
+This avoids to put a `class` attribute on all elements and allows to override styles set by an external library, for example.
 
 #### aphrodite and aphrodite-no-important
 
@@ -233,26 +237,26 @@ For all of them, except j2c, class name is stable between generations if same co
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
-(complex) Does auto-prefixing.
+(complex) Does auto-prefixing. Handles globals (not nested ones).
 
 #### cssobj
 
-(simple) Doesn't remove a non-used class. Generates class names like `original-name_13otckp1_` (customizable suffix).
+(simple) Doesn't remove a non-used class. Generates class names like `original-name_13otckp1_` (random, customizable suffix).
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
-(complex) Doesn't do auto-prefixing.
+(complex) Doesn't do auto-prefixing. Handles globals.
 
 Note that cssobj manages generation on server-side but has the poorest performance.
 It is optimized for client-side generation (diff engine, targetted updates).
 
 #### cxs and cxs-optimized
 
-(simple) Doesn't remove a non-used class. Generates class names like `cxs-4211614354`.
+(simple) Doesn't remove a non-used class. Generates class names like `cxs-4211614354` (customizable).
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
-(complex) Doesn't do auto-prefixing.
+(complex) Doesn't do auto-prefixing. Handles globals.
 
 cxs-optimized can generate some specialized classes (with names like `cxs-display-block` or `cxs-text-align-center`) removed from the classes using these styles and added to elements using them. Seems limited to properties with a small number of possible values. Named colors are not deduplicated.
 
@@ -262,7 +266,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Styles common to several classes go to classes added to all corresponding elements.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
-(complex) Doesn't do auto-prefixing.
+(complex) Does auto-prefixing.
 
 #### free-style
 
@@ -286,7 +290,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
-(complex) Doesn't do auto-prefixing.
+(complex) Doesn't do auto-prefixing. Handles globals.
 
 #### jss and jss-without-preset
 
@@ -294,7 +298,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
-(complex) Doesn't do auto-prefixing.
+(complex) Doesn't do auto-prefixing on server.
 
 #### styletron
 

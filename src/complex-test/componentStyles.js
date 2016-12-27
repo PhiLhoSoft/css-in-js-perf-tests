@@ -12,6 +12,14 @@ const createComponentStyle = (options) => {
     if (options && options.nestedSelectors !== undefined) {
         container[`${options.nestedSelectors}span`] = { margin: '0 20px 0 30px' };
         container[`${options.nestedSelectors}button`] = { marginLeft: '30px' };
+
+        let special = `&${options.nestedSelectors}.special`;
+        if (options.classNamesWithSelector === 'cssobj') {
+            special = '&.!special';
+        } else if (options.classNamesWithSelector === 'j2c') {
+            special = ':global(.special)';
+        }
+        container[special] = { backgroundColor: 'tan' };
     }
     return container;
 };

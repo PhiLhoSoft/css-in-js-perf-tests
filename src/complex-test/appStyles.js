@@ -42,6 +42,7 @@ const containerStyle = {
     flex: 1,
     [MEDIA_MAX_WIDTH]: {
         backgroundColor: 'greenyellow',
+        flexDirection: 'column',
     },
 };
 
@@ -50,6 +51,7 @@ const itemContainerStyle = {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
+    overflow: 'auto',
     [MEDIA_MAX_WIDTH]: {
         backgroundColor: 'ivory',
     },
@@ -62,6 +64,7 @@ const sideContainerStyle = {
     flexDirection: 'column',
     [MEDIA_MAX_WIDTH]: {
         backgroundColor: 'greenyellow',
+        flex: 1,
     },
 };
 
@@ -94,6 +97,7 @@ const createHelpStyle = (options) => {
         display: 'flex',
         flex: 1,
         flexDirection: 'column',
+        overflow: 'auto',
         [MEDIA_MAX_WIDTH]: {
             fontSize: '12px',
         },
@@ -105,16 +109,42 @@ const createHelpStyle = (options) => {
     return help;
 };
 
-const libraryContainerStyle = {
-    backgroundColor: 'beige',
-    color: 'darkblue',
-    fontSize: '16px',
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    [MEDIA_MAX_WIDTH]: {
-        fontSize: '12px',
-    },
+const createLibraryContainerStyle = (options) => {
+    const container = {
+        backgroundColor: 'beige',
+        color: 'darkblue',
+        fontSize: '16px',
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'column',
+        [MEDIA_MAX_WIDTH]: {
+            fontSize: '12px',
+        },
+    };
+
+    if (options && options.nestedSelectors !== undefined) {
+        let nContainer = `${options.nestedSelectors}.container`,
+            nCounter = `${options.nestedSelectors}.counter`,
+            nButton = `${options.nestedSelectors}.button`;
+        if (options.classNamesWithSelector === 'cssobj') {
+            nContainer = ' .!container';
+            nCounter = ' .!counter';
+            nButton = ' .!button';
+        } else if (options.classNamesWithSelector === 'j2c') {
+            nContainer = ' :global(.container)';
+            nCounter = ' :global(.counter)';
+            nButton = ' :global(.button)';
+        }
+        const libOverrides = { color: 'yellow', padding: '8px 12px' };
+        container[nContainer] = {
+            backgroundColor: 'coral',
+            // Check vendor prefixing goes there
+            backgroundImage: 'linear-gradient(to bottom, coral, peachpuff)',
+        };
+        container[nCounter] = libOverrides;
+        container[nButton] = libOverrides;
+    }
+    return container;
 };
 
 const createButtonStyle = options => ({
@@ -128,6 +158,9 @@ const createButtonStyle = options => ({
     [`${p(options)}:hover`]: {
         color: 'lightblue',
         borderColor: 'dodgerblue',
+    },
+    [MEDIA_MAX_WIDTH]: {
+        padding: '4px 16px',
     },
 });
 
@@ -145,12 +178,15 @@ export default function createStyleSheet(options) {
         [`${s(options)}itemContainer`]: itemContainerStyle,
         [`${s(options)}title`]: titleStyle,
         [`${s(options)}help`]: createHelpStyle(options),
-        [`${s(options)}libraryContainer`]: libraryContainerStyle,
+        [`${s(options)}libraryContainer`]: createLibraryContainerStyle(options),
         [`${s(options)}button`]: createButtonStyle(options),
     };
     if (options && options.classNamesWithSelector) {
-        // Naturally distingish tag names from class selectors
+        // Naturally distinguish tag names from class selectors
         appStyleSheet = Object.assign({}, globals, appStyleSheet); // Put globals first
+    } else if (options && options.bangGlobals) {
+        const g = Object.keys(globals).map(selector => ({ [`!${selector}`]: globals[selector] }));
+        appStyleSheet = Object.assign({}, g, appStyleSheet); // Put globals first
     } else {
         appStyleSheet.$globals$ = globals;
     }
