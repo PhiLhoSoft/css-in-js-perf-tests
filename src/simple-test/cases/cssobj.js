@@ -12,7 +12,6 @@ const styleSheet = toClassSelectors(stylesheet);
 
 export const cssobjCase = (caseName) => {
     const cssobj = cssobjCore({
-        local: true, // Add suffix to given class names
         plugins: [
             // order is important
             cssobjPluginLocalize({ /*space: '_custom_', localNames: {}*/ }), // Don't customize the output, defaults to random suffix

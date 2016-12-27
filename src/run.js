@@ -8,8 +8,8 @@ export const runTest = (testName, cases) => {
     return new Promise((resolve, reject) => {
         const testCases = {};
 
-        Object.keys(cases).forEach((k) => {
-            testCases[toKebabCase(k)] = { testCase: cases[k], result: null };
+        Object.keys(cases).forEach((caseName) => {
+            testCases[toKebabCase(caseName.replace(/Case$/, ''))] = { testCase: cases[caseName], result: null };
         });
 
         console.log(`Running ${testName} test.\n`);
@@ -52,7 +52,7 @@ export const runView = (testName, cases) => {
         const testCases = {};
 
         Object.keys(cases).forEach((caseName) => {
-            testCases[toKebabCase(caseName)] = { testCase: cases[caseName], result: null };
+            testCases[toKebabCase(caseName.replace(/Case$/, ''))] = { testCase: cases[caseName], result: null };
         });
 
         console.log(`Running view ${testName}.\n`);

@@ -4,7 +4,7 @@ import cssobjPluginLocalize from 'cssobj-plugin-localize';
 import cssobjPluginGencss from 'cssobj-plugin-gencss';
 import prefixer from 'inline-style-prefixer/static';
 
-import { mapClassNames } from '../../utilities';
+import { mapClassNames, mapStyles } from '../../utilities';
 import appData from '../data';
 import createAppStyleSheet from '../appStyles';
 import createComponentStyleSheet from '../componentStyles';
@@ -19,16 +19,19 @@ const classNamesA = createAppStyleSheet();
 const classNamesC = createComponentStyleSheet();
 
 export const cssobjCase = (caseName) => {
-    const cssobjOptions = {
-        plugins: [
-            cssobjPluginLocalize(),
-            cssobjPluginGencss({ indent: '\t', newLine: '\n' }),
-        ]
-    };
-    const cssobj = cssobjCore(cssobjOptions);
+    const localA = cssobjPluginLocalize();
+    const localC = cssobjPluginLocalize(); // Needs 2 instances
+    const genCss = cssobjPluginGencss({ indent: '\t', newLine: '\n' });
 
-    const cssObjectA = cssobj(styleSheetA);
-    const cssObjectC = cssobj(styleSheetC);
+    const cssobjA = cssobjCore({ plugins: [ localA, genCss ] });
+    const cssobjC = cssobjCore({ plugins: [ localC, genCss ] });
+
+    // To be fair, we apply auto-prefixing in the loop, like the other libraries.
+    // We focus on features more than speed in this test case, anyway.
+    const ssA = mapStyles(styleSheetA, prefixer);
+    const ssC = mapStyles(styleSheetC, prefixer);
+    const cssObjectA = cssobjA(ssA);
+    const cssObjectC = cssobjC(ssC);
 
     const renderingData = {
         app: { classNames: mapClassNames(classNamesA, cssObjectA.mapClass) },

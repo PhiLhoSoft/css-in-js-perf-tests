@@ -28,5 +28,6 @@ export const aphroditeNoImportantCase = (caseName) => {
 
     StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
 
+    // Would need to apply vendor prefixes to the globals...
     return renderHtml(processStyles(styleSheetA.$globals$) + '\n' + css.content, html);
 };

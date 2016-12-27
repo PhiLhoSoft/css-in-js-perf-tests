@@ -35,6 +35,7 @@ export const styletronCase = (caseName) => {
 
     const html = renderBody(caseName, appData, renderingData);
 
+    // Would need to apply vendor prefixes to the globals...
     const css = processStyles(styleSheetA.$globals$) + '\n' + styletron.getCss();
 
     return renderHtml(css, html);

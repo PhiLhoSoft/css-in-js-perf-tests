@@ -18,7 +18,7 @@
     "view:complex": "node lib/complex-test/view.js",
     "view": "rimraf output/ && npm run view:simple && npm run view:nested && npm run view:style-overload && npm run view:classes-overload && npm run view:complex",
     "lint": "eslint src/",
-	"sc": "babel src/complex-test/ --out-dir lib/complex-test/ && node lib/complex-test/view.js"
+    "sc": "babel src/complex-test/ --out-dir lib/complex-test/ && node lib/complex-test/view.js"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,8 @@
     "cssobj-plugin-localize": "^3.0.1",
     "cxs": "^2.1.0",
     "fela": "^4.1.0",
+    "fela-plugin-fallback-value": "^4.1.1",
+    "fela-plugin-prefixer": "^4.1.1",
     "free-style": "^2.0.0",
     "glamor": "^2.20.5",
     "inline-style-prefixer": "^2.0.5",
@@ -53,9 +55,9 @@
     "jss-preset-default": "^1.1.0",
     "jss-vendor-prefixer": "^4.0.0",
     "rimraf": "^2.5.4",
-    "styletron-client": "^2.1.1",
-    "styletron-server": "^2.1.1",
-    "styletron-utils": "^2.1.0",
+    "styletron-client": "^2.3.0",
+    "styletron-server": "^2.3.0",
+    "styletron-utils": "^2.3.0",
     "webpack": "^1.13.3"
   },
   "devDependencies": {

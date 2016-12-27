@@ -1,6 +1,6 @@
 import { MEDIA_MAX_WIDTH, p, s } from './appStyles';
 
-const createComponentStyle = options => {
+const createComponentStyle = (options) => {
     const container = {
         backgroundColor: 'seashell',
         color: 'navy',
@@ -9,7 +9,7 @@ const createComponentStyle = options => {
         [`${p(options)}:hover`]: { backgroundColor: 'moccassin' },
     };
 
-    if (options && options.nestedSelectors != undefined) {
+    if (options && options.nestedSelectors !== undefined) {
         container[`${options.nestedSelectors}span`] = { margin: '0 20px 0 30px' };
         container[`${options.nestedSelectors}button`] = { marginLeft: '30px' };
     }

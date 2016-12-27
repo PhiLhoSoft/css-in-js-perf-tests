@@ -11,7 +11,6 @@ const styleSheet = toClassSelectors(stylesheet);
 
 export const cssobjCase = (caseName) => {
     const cssobj = cssobjCore({
-        local: true,
         plugins: [
             cssobjPluginLocalize(),
             cssobjPluginGencss({ indent: '', newLine: '' }),

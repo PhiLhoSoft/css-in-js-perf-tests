@@ -18,7 +18,10 @@
             2,
             160
         ],
-		"no-plusplus": 0,
+        "no-plusplus": 0,
+        "array-bracket-spacing": [ 2, "always" ],
+		"no-param-reassign": 0,
+		"no-console": 0,
         "import/prefer-default-export": 1
     }
 }

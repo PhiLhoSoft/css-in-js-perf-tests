@@ -1,7 +1,7 @@
 import j2c from 'j2c';
 import prefixer from 'inline-style-prefixer/static';
 
-import { mapClassNames } from '../../utilities';
+import { mapClassNames, mapStyles } from '../../utilities';
 import appData from '../data';
 import createAppStyleSheet from '../appStyles';
 import createComponentStyleSheet from '../componentStyles';
@@ -13,9 +13,13 @@ const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
 
 export const j2cCase = (caseName) => {
+    // To be fair, we apply auto-prefixing in the loop, like the other libraries.
+    // We focus on features more than speed in this test case, anyway.
+    const ssA = mapStyles(styleSheetA, prefixer);
+    const ssC = mapStyles(styleSheetC, prefixer);
     // Strings with additional properties...
-    const cssA = j2c.sheet(styleSheetA);
-    const cssC = j2c.sheet(styleSheetC);
+    const cssA = j2c.sheet(ssA);
+    const cssC = j2c.sheet(ssC);
 
     const renderingData = {
         app: { classNames: mapClassNames(cssA, className => cssA[className]) },

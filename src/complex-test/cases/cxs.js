@@ -1,6 +1,5 @@
 import cxs from 'cxs';
 import prefixer from 'inline-style-prefixer/static';
-// const prefixer = x => x;
 
 import { mapStyles, mapClassNames } from '../../utilities';
 import appData from '../data';

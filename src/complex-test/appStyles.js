@@ -1,4 +1,4 @@
-export const MEDIA_MAX_WIDTH = '@media (max-width: 800px)';
+export const MEDIA_MAX_WIDTH = '@media (max-width: 1000px)';
 
 // Some libraries like free-style require to write '&:hover',
 // others accept either form, others choke on it...
@@ -81,19 +81,28 @@ const titleStyle = {
     border: '2px solid green',
     [MEDIA_MAX_WIDTH]: {
         fontSize: '18px',
+        // Check vendor prefixing goes there
+        backgroundImage: 'linear-gradient(to bottom, darkturquoise, aqua)',
     },
 };
 
-const helpStyle = {
-    backgroundColor: 'palegreen',
-    color: 'darkblue',
-    fontSize: '20px',
-    display: 'flex',
-    flex: 1,
-    flexDirection: 'column',
-    [MEDIA_MAX_WIDTH]: {
-        fontSize: '12px',
-    },
+const createHelpStyle = (options) => {
+    const help = {
+        backgroundColor: 'palegreen',
+        color: 'darkblue',
+        fontSize: '20px',
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'column',
+        [MEDIA_MAX_WIDTH]: {
+            fontSize: '12px',
+        },
+    };
+
+    if (options && options.nestedSelectors !== undefined) {
+        help[`${options.nestedSelectors}p`] = { textIndent: '12px', padding: '0 12px', cursor: 'grab' }; // grab must be vendor prefixed
+    }
+    return help;
 };
 
 const libraryContainerStyle = {
@@ -128,20 +137,20 @@ export default function createStyleSheet(options) {
         '*, *:before, *:after': boxSizing,
         body: bodyStyle,
     };
-    const appStyleSheet = {
+    let appStyleSheet = {
         [`${s(options)}top`]: topStyle,
         [`${s(options)}container`]: containerStyle,
         [`${s(options)}sideContainer`]: sideContainerStyle,
         [`${s(options)}bottom`]: bottomStyle,
         [`${s(options)}itemContainer`]: itemContainerStyle,
         [`${s(options)}title`]: titleStyle,
-        [`${s(options)}help`]: helpStyle,
+        [`${s(options)}help`]: createHelpStyle(options),
         [`${s(options)}libraryContainer`]: libraryContainerStyle,
         [`${s(options)}button`]: createButtonStyle(options),
     };
     if (options && options.classNamesWithSelector) {
         // Naturally distingish tag names from class selectors
-        Object.assign(appStyleSheet, globals);
+        appStyleSheet = Object.assign({}, globals, appStyleSheet); // Put globals first
     } else {
         appStyleSheet.$globals$ = globals;
     }

@@ -64,10 +64,12 @@ Promise.all([
     testBundle('fela'),
     testBundle('free-style'),
     testBundle('glamor'),
+    testBundle('glamor-server'),
     testBundle('j2c'),
     testBundle('jss'),
     testBundle('jss-without-preset'),
     testBundle('styletron'),
+    testBundle('styletron-server'),
 ]).then(() => {
     rimraf(path.join(__dirname, 'dist'), (err) => {
         if (err) {

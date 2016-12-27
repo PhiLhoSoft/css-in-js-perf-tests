@@ -3,7 +3,7 @@ export const renderHtml = (css, body) =>
 `<!DOCTYPE html>
 <html>
     <head>
-        <style type="text/css"><!-- Styles of the fake library -->
+        <style type="text/css">/* Styles of the fake library */
 .container { background-color: red; padding: 16px; }
 .container .counter { margin: 0 20px; padding: 4px; background-color: blue; color: white; }
 .container .button { padding: 4px 8px; background-color: darkblue; color: white; font-weight: bold; }

@@ -20,6 +20,7 @@ const styleSheetC = createComponentStyleSheet();
 export const glamorCase = (caseName) => {
     // Everything must be done within the renderStatic call
     const { html, css } = renderStatic(() => {
+        // Doesn't apply vendor prefixes to the globals...
         processGlobals(styleSheetA);
         const renderingData = {
             app: { classNames: mapClassNames(styleSheetA, className => style(styleSheetA[className])) },

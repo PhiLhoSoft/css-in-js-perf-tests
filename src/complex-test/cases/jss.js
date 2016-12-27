@@ -1,8 +1,9 @@
 import { create, SheetsRegistry } from 'jss';
-import preset from 'jss-preset-default';
+import preset from 'jss-preset-default'; // Includes jss-vendor-prefixer but it doesn't work on the server side.
 import global from 'jss-global';
+import prefixer from 'inline-style-prefixer/static';
 
-import { mapClassNames } from '../../utilities';
+import { mapClassNames, prefixStylesWithFallbacks } from '../../utilities';
 import appData from '../data';
 import createAppStyleSheet from '../appStyles';
 import createComponentStyleSheet from '../componentStyles';
@@ -18,9 +19,12 @@ export const jssCase = (caseName) => {
     const sheets = new SheetsRegistry();
     jss.use(global());
 
-    const cssG = jss.createStyleSheet({ '@global': styleSheetA.$globals$ }).attach();
-    const cssA = jss.createStyleSheet(styleSheetA).attach();
-    const cssC = jss.createStyleSheet(styleSheetC).attach();
+    const ssA = prefixStylesWithFallbacks(styleSheetA, prefixer);
+    const ssC = prefixStylesWithFallbacks(styleSheetC, prefixer);
+
+    const cssG = jss.createStyleSheet({ '@global': ssA.$globals$ }).attach();
+    const cssA = jss.createStyleSheet(ssA).attach();
+    const cssC = jss.createStyleSheet(ssC).attach();
     const renderingData = {
         app: { classNames: mapClassNames(cssA.classes, className => cssA.classes[className]) },
         item: {

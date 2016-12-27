@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 export const toKebabCase = n =>
-    n.replace(/Case$/, '').replace(/([a-z])([A-Z])/g, (match, c1, c2) => `${c1}-${c2.toLowerCase()}`);
+    n.replace(/([A-Z])/g, (match, c1) => `-${c1.toLowerCase()}`);
 
 export const pad = (n) => {
     const titleLength = 30;
@@ -74,4 +74,41 @@ export const processStyles = (styles, prefixer) => {
     }
     Object.keys(styles).forEach((selector) => { css.push(`${selector} {`); process(prefixer(styles[selector])); css.push('}'); });
     return css.join('\n');
+};
+
+// inline-style-prefixer provides fallbacks in arrays as values,
+// but JSS puts them in a special "fallbacks" property, in addition to the canonical value.
+// So this code walks the style object recursively and when it meets an array as value,
+// it replaces it with the last value of the array and adds the remainder in the "fallbacks" property.
+// This works only for our simple test cases, it is not robust enough for general cases.
+// For this, one would rather hack the jss-vendor-prefixer plugin to work on the server side...
+export const prefixStylesWithFallbacks = (styles, prefixer) => {
+    // For each property of the style, prefixes its style.
+    const css = Object.keys(styles).reduce((ss, className) => {
+        ss[className] = prefixer(styles[className]);
+        return ss;
+    }, {});
+
+    function arrayToFallback(obj) {
+        Object.keys(obj).forEach((k) => {
+            if (Array.isArray(obj[k])) {
+                if (!Array.isArray(obj.fallbacks)) {
+                    obj.fallbacks = [];
+                }
+                const array = obj[k];
+                const value = array.pop();
+                array.forEach((v) => {
+                    obj.fallbacks.push({ [k]: v });
+                });
+                obj[k] = value;
+            } else if (typeof obj[k] === 'object') {
+                arrayToFallback(obj[k]);
+            }
+        });
+
+        return obj;
+    }
+
+    // Examine each property and if it is an object, proceed recursively, or if it is an array, process the fallbacks.
+    return arrayToFallback(css);
 };

@@ -1,5 +1,6 @@
 import { createRenderer } from 'fela';
-// import prefixer from 'inline-style-prefixer/static';
+import felaPluginPrefixer from 'fela-plugin-prefixer';
+import felaPluginFallbackValue from 'fela-plugin-fallback-value';
 
 import { mapClassNames } from '../../utilities';
 import appData from '../data';
@@ -18,7 +19,7 @@ const styleSheetA = createAppStyleSheet();
 const styleSheetC = createComponentStyleSheet();
 
 export const felaCase = (caseName) => {
-    const renderer = createRenderer();
+    const renderer = createRenderer({ plugins: [ felaPluginPrefixer(), felaPluginFallbackValue() ] });
     processGlobals(styleSheetA, renderer);
 
     const renderingData = {
