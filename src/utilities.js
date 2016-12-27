@@ -1,4 +1,6 @@
+import Table from 'easy-table';
 import fs from 'fs';
+import gzipSize from 'gzip-size';
 
 export const toKebabCase = n =>
     n.replace(/([A-Z])/g, (match, c1) => `-${c1.toLowerCase()}`);
@@ -112,3 +114,42 @@ export const prefixStylesWithFallbacks = (styles, prefixer) => {
     // Examine each property and if it is an object, proceed recursively, or if it is an array, process the fallbacks.
     return arrayToFallback(css);
 };
+
+export const getSizeResults = testCases => (
+    Object.keys(testCases).map((caseName) => {
+        const result = testCases[caseName].result;
+        return {
+            caseName,
+            size: result.length,
+            gzippedSize: gzipSize.sync(result),
+        };
+    })
+);
+
+export const sizeTable = (sizeResults) => {
+    const t = new Table();
+    sizeResults.forEach((sr) => {
+        t.cell('name', sr.caseName);
+        t.cell('size', `${sr.size.toLocaleString()} B`, Table.padLeft);
+        t.cell('gzipped size', `(${sr.gzippedSize.toLocaleString()} B gzipped)`, Table.padLeft);
+        t.newRow();
+    });
+    return t;
+};
+
+export const getSmallest = (_sizeResults, size, { threshold = 0.05 } = {}) => {
+    const sizeResults = Array.from(_sizeResults); // clone so sort won't mutate original
+    sizeResults.sort((a, b) => a[size] - b[size]);
+
+    const smallest = sizeResults[0];
+    const smallestThreshold = smallest[size] * (1 + threshold);
+
+    return sizeResults.filter(sr => sr[size] <= smallestThreshold);
+};
+
+export const indent = (lines, { repeat = 2, character = ' ' } = {}) => (
+    lines
+        .split('\n')
+        .map(line => character.repeat(repeat) + line)
+        .join('\n')
+);

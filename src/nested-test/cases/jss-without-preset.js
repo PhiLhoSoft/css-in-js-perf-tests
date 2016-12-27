@@ -1,4 +1,5 @@
 import { create, SheetsRegistry } from 'jss';
+import cache from 'jss-cache';
 import nested from 'jss-nested';
 import camelCase from 'jss-camel-case';
 
@@ -8,11 +9,10 @@ import { renderHtml, renderBody } from '../render';
 const options = { prefixPseudo: true };
 const styleSheet = createStyleSheet(options);
 
+
 export const jssWithoutPresetCase = (caseName) => {
     const jss = create();
     const sheets = new SheetsRegistry();
-    jss.use(nested());
-    jss.use(camelCase());
 
     const jssCss = jss.createStyleSheet(styleSheet).attach();
 
