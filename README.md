@@ -270,7 +270,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 
 #### fela
 
-(simple) Removes a non-used class. Generates class names like `a`, `b`, `c`, then `A`, `B`, `C`. Each class has one property only, they are merged at element level.
+(simple) Doesn't remove a non-used class. Generates class names like `a`, `b`, `c`, then `A`, `B`, `C`. Each class has one property only, they are merged at element level.
 (style overload) Styles common to several classes go to classes added to all corresponding elements.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
@@ -306,7 +306,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Doesn't detect identical classes that remain duplicate.
 (nested) Manages pseudo-classes and media queries.
-(complex) Doesn't do auto-prefixing on server.
+(complex) Doesn't do auto-prefixing on server. Handles globals.
 
 #### styletron
 

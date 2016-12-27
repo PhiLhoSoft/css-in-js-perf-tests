@@ -1,12 +1,16 @@
 import { create, SheetsRegistry } from 'jss';
+import cache from 'jss-cache';
 import camelCase from 'jss-camel-case';
 import { stylesheet, buttonClassNames } from '../styles';
 import { renderHtml, renderBody } from '../render';
 
+const cachePlugin = cache();
+const camelCasePlugin = camelCase();
+
 export const jssWithoutPresetCase = (caseName) => {
     const jss = create();
+    jss.use(cachePlugin, camelCasePlugin);
     const sheets = new SheetsRegistry();
-    jss.use(camelCase());
 
     const jssCss = jss.createStyleSheet(stylesheet).attach();
 

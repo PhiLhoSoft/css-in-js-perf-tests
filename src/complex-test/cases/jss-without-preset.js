@@ -1,7 +1,8 @@
 import { create, SheetsRegistry } from 'jss';
+import cache from 'jss-cache';
+import global from 'jss-global';
 import nested from 'jss-nested';
 import camelCase from 'jss-camel-case';
-import global from 'jss-global';
 // import vendorPrefixer from 'jss-vendor-prefixer';
 import prefixer from 'inline-style-prefixer/static';
 
@@ -12,17 +13,20 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
+const cachePlugin = cache();
+const globalPlugin = global();
+const nestedPlugin = nested();
+const camelCasePlugin = camelCase();
+
 const options = { prefixPseudo: true, nestedSelectors: '@global ' };
 const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
 
 export const jssWithoutPresetCase = (caseName) => {
     const jss = create();
-    const sheets = new SheetsRegistry();
-    jss.use(global()); // Before nested
-    jss.use(nested());
-    jss.use(camelCase());
+    jss.use(cachePlugin, globalPlugin, nestedPlugin, camelCasePlugin);
     // jss.use(vendorPrefixer()); // But actually doesn't work on server side :-/
+    const sheets = new SheetsRegistry();
 
     const ssA = prefixStylesWithFallbacks(styleSheetA, prefixer);
     const ssC = prefixStylesWithFallbacks(styleSheetC, prefixer);
@@ -43,7 +47,8 @@ export const jssWithoutPresetCase = (caseName) => {
     sheets.add(cssG);
     sheets.add(cssA);
     sheets.add(cssC);
-    const css = sheets.toString();
+    // Hack to have adjacent class names, like "".foo.bar" instead of ".foo .bar" (marked as ".foo &.bar")
+    const css = sheets.toString().replace(/ &\./g, '.');
 
     return renderHtml(css, html);
 };

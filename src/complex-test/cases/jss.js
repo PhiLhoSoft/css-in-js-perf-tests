@@ -1,5 +1,6 @@
 import { create, SheetsRegistry } from 'jss';
 import preset from 'jss-preset-default'; // Includes jss-vendor-prefixer but it doesn't work on the server side.
+import cache from 'jss-cache';
 import prefixer from 'inline-style-prefixer/static';
 
 import { mapClassNames, prefixStylesWithFallbacks } from '../../utilities';
@@ -9,12 +10,15 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
+const settings = preset();
+settings.plugins.unshift(cache());
+
 const options = { prefixPseudo: true, nestedSelectors: '@global ' };
 const styleSheetA = createAppStyleSheet(options);
 const styleSheetC = createComponentStyleSheet(options);
 
 export const jssCase = (caseName) => {
-    const jss = create(preset());
+    const jss = create(settings);
     const sheets = new SheetsRegistry();
 
     const ssA = prefixStylesWithFallbacks(styleSheetA, prefixer);
@@ -36,7 +40,8 @@ export const jssCase = (caseName) => {
     sheets.add(cssG);
     sheets.add(cssA);
     sheets.add(cssC);
-    const css = sheets.toString();
+    // Hack to have adjacent class names, like "".foo.bar" instead of ".foo .bar" (marked as ".foo &.bar")
+    const css = sheets.toString().replace(/ &\./g, '.');
 
     return renderHtml(css, html);
 };
