@@ -15,10 +15,10 @@ function processGlobals(styles, renderer) {
     });
 }
 
-const styleSheetA = createAppStyleSheet();
-const styleSheetC = createComponentStyleSheet();
-
 export const felaCase = (caseName) => {
+    const styleSheetA = createAppStyleSheet();
+    const styleSheetC = createComponentStyleSheet();
+
     const renderer = createRenderer({ plugins: [ felaPluginPrefixer(), felaPluginFallbackValue() ] });
     processGlobals(styleSheetA, renderer);
 

@@ -8,10 +8,11 @@ import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
 const options = { bangGlobals: true };
-const styleSheetA = createAppStyleSheet(options);
-const styleSheetC = createComponentStyleSheet(options);
 
 export const aphroditeNoImportantCase = (caseName) => {
+    const styleSheetA = createAppStyleSheet(options);
+    const styleSheetC = createComponentStyleSheet(options);
+
     const cssA = Extended.StyleSheet.create(styleSheetA);
     const cssC = Extended.StyleSheet.create(styleSheetC);
 

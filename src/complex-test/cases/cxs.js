@@ -15,10 +15,11 @@ function processGlobals(styles) {
 }
 
 const options = { nestedSelectors: '' };
-const styleSheetA = createAppStyleSheet(options);
-const styleSheetC = createComponentStyleSheet(options);
 
 export const cxsCase = (caseName) => {
+    const styleSheetA = createAppStyleSheet(options);
+    const styleSheetC = createComponentStyleSheet(options);
+
     processGlobals(styleSheetA);
     const mappedClassNamesA = mapStyles(styleSheetA, cxs, prefixer);
     const mappedClassNamesC = mapStyles(styleSheetC, cxs, prefixer);

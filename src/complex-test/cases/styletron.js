@@ -15,11 +15,11 @@ import { renderItemComponent } from '../renderItemComponent';
 //     });
 // }
 
-const styleSheetA = createAppStyleSheet();
-const styleSheetC = createComponentStyleSheet();
-
 export const styletronCase = (caseName) => {
     const styletron = new Styletron();
+
+    const styleSheetA = createAppStyleSheet();
+    const styleSheetC = createComponentStyleSheet();
 
     const process = injectStylePrefixed.bind(null, styletron);
     // processGlobals(styleSheetA, process);

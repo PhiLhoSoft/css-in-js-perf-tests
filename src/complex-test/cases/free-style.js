@@ -9,11 +9,12 @@ import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
 const options = { prefixPseudo: true };
-const styleSheetA = createAppStyleSheet(options);
-const styleSheetC = createComponentStyleSheet(options);
 
 export const freeStyleCase = (caseName) => {
     const Style = FreeStyle.create();
+
+    const styleSheetA = createAppStyleSheet(options);
+    const styleSheetC = createComponentStyleSheet(options);
 
     const renderingData = {
         app: { classNames: mapClassNames(styleSheetA, className => Style.registerStyle(prefixer(styleSheetA[className]))) },

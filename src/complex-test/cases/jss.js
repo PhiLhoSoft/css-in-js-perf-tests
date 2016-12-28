@@ -13,14 +13,17 @@ import { renderItemComponent } from '../renderItemComponent';
 const settings = preset();
 settings.plugins.unshift(cache());
 
-const options = { prefixPseudo: true, nestedSelectors: '@global ' };
-const styleSheetA = createAppStyleSheet(options);
-const styleSheetC = createComponentStyleSheet(options);
+const options = { prefixPseudo: true, nestedSelectors: '& ' };
 
 export const jssCase = (caseName) => {
     const jss = create(settings);
     const sheets = new SheetsRegistry();
 
+    // prefixer alters styleSheetX, so we have to create a fresh one on each loop...
+    const styleSheetA = createAppStyleSheet(options);
+    const styleSheetC = createComponentStyleSheet(options);
+
+    // Apply inline-style-prefixer and adapt to JSS syntax which uses arrays as values for other purposes than fallbacks.
     const ssA = prefixStylesWithFallbacks(styleSheetA, prefixer);
     const ssC = prefixStylesWithFallbacks(styleSheetC, prefixer);
 
@@ -40,8 +43,7 @@ export const jssCase = (caseName) => {
     sheets.add(cssG);
     sheets.add(cssA);
     sheets.add(cssC);
-    // Hack to have adjacent class names, like "".foo.bar" instead of ".foo .bar" (marked as ".foo &.bar")
-    const css = sheets.toString().replace(/ &\./g, '.');
+    const css = sheets.toString();
 
     return renderHtml(css, html);
 };

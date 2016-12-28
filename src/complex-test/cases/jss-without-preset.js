@@ -18,15 +18,17 @@ const globalPlugin = global();
 const nestedPlugin = nested();
 const camelCasePlugin = camelCase();
 
-const options = { prefixPseudo: true, nestedSelectors: '@global ' };
-const styleSheetA = createAppStyleSheet(options);
-const styleSheetC = createComponentStyleSheet(options);
+const options = { prefixPseudo: true, nestedSelectors: '& ' };
 
 export const jssWithoutPresetCase = (caseName) => {
     const jss = create();
     jss.use(cachePlugin, globalPlugin, nestedPlugin, camelCasePlugin);
     // jss.use(vendorPrefixer()); // But actually doesn't work on server side :-/
     const sheets = new SheetsRegistry();
+
+    const styleSheetA = createAppStyleSheet(options);
+    const styleSheetC = createComponentStyleSheet(options);
+    console.log(styleSheetC);
 
     const ssA = prefixStylesWithFallbacks(styleSheetA, prefixer);
     const ssC = prefixStylesWithFallbacks(styleSheetC, prefixer);
@@ -47,8 +49,7 @@ export const jssWithoutPresetCase = (caseName) => {
     sheets.add(cssG);
     sheets.add(cssA);
     sheets.add(cssC);
-    // Hack to have adjacent class names, like "".foo.bar" instead of ".foo .bar" (marked as ".foo &.bar")
-    const css = sheets.toString().replace(/ &\./g, '.');
+    const css = sheets.toString();
 
     return renderHtml(css, html);
 };

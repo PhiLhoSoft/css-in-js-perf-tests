@@ -21,10 +21,11 @@ function moveMediaToEnd(style) {
 }
 
 const options = { prefixPseudo: true, classNamesWithSelector: 'j2c', nestedSelectors: ' ' };
-const styleSheetA = createAppStyleSheet(options);
-const styleSheetC = createComponentStyleSheet(options);
 
 export const j2cCase = (caseName) => {
+    const styleSheetA = createAppStyleSheet(options);
+    const styleSheetC = createComponentStyleSheet(options);
+
     // To be fair, we apply auto-prefixing in the loop, like the other libraries.
     // We focus on features more than speed in this test case, anyway.
     const ssA = mapStyles(styleSheetA, prefixer);

@@ -14,10 +14,10 @@ function processGlobals(styles) {
     });
 }
 
-const styleSheetA = createAppStyleSheet();
-const styleSheetC = createComponentStyleSheet();
-
 export const glamorCase = (caseName) => {
+    const styleSheetA = createAppStyleSheet();
+    const styleSheetC = createComponentStyleSheet();
+
     // Everything must be done within the renderStatic call
     const { html, css } = renderStatic(() => {
         // Doesn't apply vendor prefixes to the globals...
