@@ -282,7 +282,7 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
-(complex) Doesn't do auto-prefixing.
+(complex) Doesn't do auto-prefixing. Handles globals. Can detect identical styles: `.fkhqkdz .button,.fkhqkdz .counter{color:yellow;padding:8px 12px}`
 
 #### glamor
 

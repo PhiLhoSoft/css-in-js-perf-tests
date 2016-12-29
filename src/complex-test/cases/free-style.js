@@ -8,7 +8,13 @@ import createComponentStyleSheet from '../componentStyles';
 import { renderHtml, renderBody } from '../render';
 import { renderItemComponent } from '../renderItemComponent';
 
-const options = { prefixPseudo: true };
+function processGlobals(styles, Style) {
+    Object.keys(styles.$globals$).forEach((selector) => {
+        Style.registerRule(selector, prefixer(styles.$globals$[selector]));
+    });
+}
+
+const options = { prefixPseudo: true, nestedSelectors: '' };
 
 export const freeStyleCase = (caseName) => {
     const Style = FreeStyle.create();
@@ -16,6 +22,7 @@ export const freeStyleCase = (caseName) => {
     const styleSheetA = createAppStyleSheet(options);
     const styleSheetC = createComponentStyleSheet(options);
 
+    processGlobals(styleSheetA, Style);
     const renderingData = {
         app: { classNames: mapClassNames(styleSheetA, className => Style.registerStyle(prefixer(styleSheetA[className]))) },
         item: {
@@ -26,7 +33,7 @@ export const freeStyleCase = (caseName) => {
 
     const html = renderBody(caseName, appData, renderingData);
 
-    const css = processStyles(styleSheetA.$globals$, prefixer) + '\n' + Style.getStyles();
+    const css = Style.getStyles();
 
     return renderHtml(css, html);
 };

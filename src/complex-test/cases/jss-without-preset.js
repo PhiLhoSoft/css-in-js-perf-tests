@@ -28,12 +28,12 @@ export const jssWithoutPresetCase = (caseName) => {
 
     const styleSheetA = createAppStyleSheet(options);
     const styleSheetC = createComponentStyleSheet(options);
-    console.log(styleSheetC);
 
     const ssA = prefixStylesWithFallbacks(styleSheetA, prefixer);
     const ssC = prefixStylesWithFallbacks(styleSheetC, prefixer);
 
     const cssG = jss.createStyleSheet({ '@global': ssA.$globals$ }).attach();
+    ssA.$globals$ = undefined;
     const cssA = jss.createStyleSheet(ssA).attach();
     const cssC = jss.createStyleSheet(ssC).attach();
     const renderingData = {
