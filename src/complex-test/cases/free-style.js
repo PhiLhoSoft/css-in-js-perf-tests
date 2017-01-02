@@ -1,7 +1,7 @@
 import FreeStyle from 'free-style';
 import prefixer from 'inline-style-prefixer/static';
 
-import { mapClassNames, processStyles } from '../../utilities';
+import { mapClassNames } from '../../utilities';
 import appData from '../data';
 import createAppStyleSheet from '../appStyles';
 import createComponentStyleSheet from '../componentStyles';
@@ -23,10 +23,11 @@ export const freeStyleCase = (caseName) => {
     const styleSheetC = createComponentStyleSheet(options);
 
     processGlobals(styleSheetA, Style);
+    // Can add class name as shown to keep the original name for debugging purpose.
     const renderingData = {
-        app: { classNames: mapClassNames(styleSheetA, className => Style.registerStyle(prefixer(styleSheetA[className]))) },
+        app: { classNames: mapClassNames(styleSheetA, className => Style.registerStyle(prefixer(styleSheetA[className])/*, className*/)) },
         item: {
-            classNames: mapClassNames(styleSheetC, className => Style.registerStyle(prefixer(styleSheetC[className]))),
+            classNames: mapClassNames(styleSheetC, className => Style.registerStyle(prefixer(styleSheetC[className])/*, className*/)),
             renderComponent: renderItemComponent,
         },
     };

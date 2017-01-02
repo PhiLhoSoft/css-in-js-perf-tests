@@ -15,9 +15,11 @@ function processGlobals(styles, renderer) {
     });
 }
 
+const options = { nestedSelectors: '> ' }; // Doesn't handle all cases (non-immediate child, .special...)
+
 export const felaCase = (caseName) => {
-    const styleSheetA = createAppStyleSheet();
-    const styleSheetC = createComponentStyleSheet();
+    const styleSheetA = createAppStyleSheet(options);
+    const styleSheetC = createComponentStyleSheet(options);
 
     const renderer = createRenderer({ plugins: [ felaPluginPrefixer(), felaPluginFallbackValue() ] });
     processGlobals(styleSheetA, renderer);

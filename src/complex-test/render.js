@@ -34,7 +34,6 @@ export const renderBody = (libraryName, appData, renderingData) =>
     <h1>${libraryName}</h1>
 </header>
 <div class="${renderingData.app.classNames.container}">
-    <!-- TODO -->
     <section class="${renderingData.app.classNames.itemContainer}">
         <header class="${renderingData.app.classNames.title}">
             <h2>Main app</h2>

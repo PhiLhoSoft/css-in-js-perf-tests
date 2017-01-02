@@ -267,6 +267,7 @@ It is optimized for client-side generation (diff engine, targetted updates).
 (complex) Doesn't do auto-prefixing. Handles globals.
 
 cxs-optimized can generate some specialized classes (with names like `cxs-display-block` or `cxs-text-align-center`) removed from the classes using these styles and added to elements using them. Seems limited to properties with a small number of possible values. Named colors are not deduplicated.
+Apparently cxs-optimized will be removed and CXS introduces three modes: atomic with semi-readable names, monolithic with hashed names and lite with super-short names (like Fela), not supporting globals.
 
 #### fela
 
@@ -274,15 +275,15 @@ cxs-optimized can generate some specialized classes (with names like `cxs-displa
 (style overload) Styles common to several classes go to classes added to all corresponding elements.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
-(complex) Does auto-prefixing.
+(complex) Does auto-prefixing. Handles globals, nested limited to immediate children.
 
 #### free-style
 
-(simple) Doesn't remove a non-used class. Generates class names like `f1lzwo7y`.
+(simple) Doesn't remove a non-used class. Generates class names like `f1lzwo7y`. Can generate `originalName_f1lzwo7y` for debugging purpose.
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries.
-(complex) Doesn't do auto-prefixing. Handles globals. Can detect identical styles: `.fkhqkdz .button,.fkhqkdz .counter{color:yellow;padding:8px 12px}`
+(complex) Doesn't do auto-prefixing. Handles globals. Detect identical sub-styles: `.fkhqkdz .button,.fkhqkdz .counter{color:yellow;padding:8px 12px}`
 
 #### glamor
 
