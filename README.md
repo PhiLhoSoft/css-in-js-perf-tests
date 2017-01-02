@@ -291,7 +291,7 @@ Apparently cxs-optimized will be removed and CXS introduces three modes: atomic 
 (style overload) Different classes with a common style are kept as is.
 (classes overload) Detects identical classes that are merged.
 (nested) Manages pseudo-classes and media queries. Adds selectors like `css-1u8v7v4[data-simulate-hover]`.
-(complex) Does auto-prefixing.
+(complex) Does auto-prefixing. Handles globals.
 
 #### j2c
 

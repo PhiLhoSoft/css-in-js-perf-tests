@@ -14,9 +14,11 @@ function processGlobals(styles) {
     });
 }
 
+const options = { nestedSelectors: '& ' };
+
 export const glamorCase = (caseName) => {
-    const styleSheetA = createAppStyleSheet();
-    const styleSheetC = createComponentStyleSheet();
+    const styleSheetA = createAppStyleSheet(options);
+    const styleSheetC = createComponentStyleSheet(options);
 
     // Everything must be done within the renderStatic call
     const { html, css } = renderStatic(() => {
