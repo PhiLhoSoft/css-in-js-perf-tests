@@ -10,6 +10,9 @@
     "bench:classes-overload": "node lib/classes-overload-test",
     "bench:complex": "node lib/complex-test",
     "bench": "npm run --silent compile && npm run --silent bench:simple && npm run --silent bench:nested && npm run --silent bench:style-overload && npm run --silent bench:classes-overload && npm run --silent bench:complex",
+    "browserBench": "rimraf output/ && npm run --silent browser:classes-overload && npm run --silent browser:style-overload",
+    "browser:classes-overload": "node lib/classes-overload-test/browser.js",
+    "browser:style-overload": "node lib/style-overload-test/browser.js",
     "bundle": "babel-node src/size-test",
     "view:simple": "node lib/simple-test/view.js",
     "view:nested": "node lib/nested-test/view.js",
@@ -36,6 +39,7 @@
     "babel-loader": "^6.2.7",
     "beautify-benchmark": "^0.2.4",
     "benchmark": "^2.1.2",
+    "cli-table": "^0.3.1",
     "cssobj": "^1.0.1",
     "cssobj-core": "^1.0.0",
     "cssobj-plugin-gencss": "^2.0.3",
@@ -61,6 +65,7 @@
     "styletron-client": "^2.3.0",
     "styletron-server": "^2.3.0",
     "styletron-utils": "^2.3.0",
+    "wd": "^1.1.1",
     "webpack": "^1.13.3"
   },
   "devDependencies": {
